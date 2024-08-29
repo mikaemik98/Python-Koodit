@@ -9,9 +9,9 @@ while yritys <= yritys_maara:
         Salasana = input('Anna salasana: ')
         if Salasana == 'rules':
             print('Tervetuloa!')
-        elif Käyttäjätunnus or Salasana != Käyttäjätunnus or Salasana:
-            print('Pääsy evätty')
         elif yritys_maara > 5:
             break
+        elif Käyttäjätunnus or Salasana != Käyttäjätunnus or Salasana:
+            print('Pääsy evätty')
     else:
         print('Pääsy evätty.')
