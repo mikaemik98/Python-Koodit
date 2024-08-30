@@ -1,17 +1,17 @@
-Käyttäjätunnus = 'python'
-Salasana = 'rules'
+Kayttajatunnus_O = 'python'
+Salasana_O = 'rules'
 yritys = 0
 yritys_maara = 5
-while yritys <= yritys_maara:
-    yritys_maara += 1
-    Käyttäjätunnus = input('Anna käyttäjätunnus: ')
-    if Käyttäjätunnus == 'python':
-        Salasana = input('Anna salasana: ')
-        if Salasana == 'rules':
-            print('Tervetuloa!')
-        elif yritys_maara > 5:
-            break
-        elif Käyttäjätunnus or Salasana != Käyttäjätunnus or Salasana:
-            print('Pääsy evätty')
+while yritys < yritys_maara:
+    yritys += 1
+    Kayttajatunnus = input('Anna käyttäjätunnus: ')
+    Salasana = input('Anna salasana: ')
+    if Kayttajatunnus == Kayttajatunnus_O and Salasana == Salasana_O:
+        print('Tervetuloa!')
+        break
     else:
-        print('Pääsy evätty.')
+        yritys += 1
+        if yritys > yritys_maara:
+            print('Virheellinen salasana tai käyttäjätunnus.')
+        else:
+            print('Pääsy evätty.')
