@@ -1,8 +1,13 @@
-
-luku = 0
 anna_luku = int(input('Anna luku: '))
-for luku in range(anna_luku):
-    luku % 1 == 0
-    print(f'Luku {luku} on alkuluku')
+if anna_luku < 2:
+    print(f'Luku {anna_luku} ei ole alkuluku')
 else:
-    print(f'Luku {luku} ei ole alkuluku')
+    on_alkuluku = True
+for luku in range(2, anna_luku):
+    if anna_luku % luku == 0:
+        on_alkuluku = False
+        break
+if on_alkuluku:
+    print(f'Luku {anna_luku} on alkuluku')
+else:
+    print(f'Luku {anna_luku} ei ole alkuluku')
