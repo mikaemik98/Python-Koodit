@@ -84,14 +84,15 @@ def calculate_sum(numbers):
     for i in range(len(numbers)):
         total_sum = total_sum + numbers[i]
         numbers[i] = 0 #nollataan listan käsiteltävä alkio ihan vaan huvikseen
-    print(numbers)
+    #print(numbers)
     #for num in numbers:
     #    total_sum = total_sum + num
     return total_sum
 
 
-nums = [3, 4, 5]
+nums = [3, 4, 5] #nums sijoittuu funktion numbers
 print(nums)
-print(calculate_sum(nums))
+print(calculate_sum(nums)) #kutsutaan funktio ja listaa nums joka on sijoitettu numbersiin
+#funktio muokkasi samaa listaa, mihin pääohjelma nums muuttuja viittaa
 print(nums)
 #print(calculate_sum([3, 4, 5, 10]))
