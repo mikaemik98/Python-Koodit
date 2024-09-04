@@ -1,13 +1,12 @@
 def polttoaine(gallona):
-    return gallona
+    return gallona * 3.785
 
 def polttoaine_muuntaja():
     while True:
-        gallona = 3.785
         luku = float(input('Anna gallona: '))
         if luku < 0:
             print('Luku on negatiivinen sitä ei voi tulostaa')
             break
-        litra = gallona * luku
-        print(f'Antamasi gallona on {litra} litraa')
+        litra = polttoaine(luku)
+        print(f'Antamasi gallona on {litra:.2f} litraa')
 polttoaine_muuntaja()
