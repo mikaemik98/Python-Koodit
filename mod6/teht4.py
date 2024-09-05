@@ -12,3 +12,4 @@ for i in range(n):
     lista.append(int(input('Anna luku: ')))
 tulos = kokonaisluvut(lista)
 print(tulos)
+#d
