@@ -41,3 +41,5 @@ icao = input("Anna uusi ICAO: ")
 name = input("Anna uuden kentän nimi: ")
 municipality = input("Ja paikkakunta: ")
 add_airport(icao, name, municipality)
+
+# select latitude_deg, longitude_deg from airport where ident = 'EFHK';
