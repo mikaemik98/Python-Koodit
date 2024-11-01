@@ -18,12 +18,6 @@ class Auto:
         else:
             self.nopeus = uusi_nopeus
 
-    def tunti_kuluu(self):
-        for auto in self.Auto:
-            nopeuden_muutos = (-10, 15)  # Arvotaan nopeuden muutos
-            auto.kiihdyta(nopeuden_muutos)
-            auto.kulje(1)
-
     def kulje(self, aika):
         self.matka += aika * self.nopeus
 
@@ -34,7 +28,7 @@ class Sahkoauto(Auto):
 
     def tulosta_ominaisuudet(self):
         super().tulosta_ominaisuudet()
-        print(f"Akkukapasiteetti: {self.akkukapasiteetti}")
+        print(f"Akkukapasiteetti: {self.akkukapasiteetti} kWh")
 
 
 class Polttomoottoriauto(Auto):
@@ -44,13 +38,16 @@ class Polttomoottoriauto(Auto):
 
     def tulosta_ominaisuudet(self):
         super().tulosta_ominaisuudet()
-        print(f"Bensatankin koko: {self.bensatankki}")
+        print(f"Bensatankin koko: {self.bensatankki} l")
 
-s = Sahkoauto("ABC-15", "180km/h", "52.5kWh")
-p = Polttomoottoriauto("ADC-123", "165km/h", "32.3l")
+s = Sahkoauto("ABC-15", 180, 52.5)
+p = Polttomoottoriauto("ADC-123", 165, 32.3)
 
 s.kiihdyta(120)
 p.kiihdyta(150)
+
+s.kulje(3)
+p.kulje(3)
 
 s.tulosta_ominaisuudet()
 p.tulosta_ominaisuudet()
