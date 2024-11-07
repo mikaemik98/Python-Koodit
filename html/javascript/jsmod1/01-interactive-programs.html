@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mod 01</title>
+    <style>
+      .blue {
+        color: blue;
+      }
+    </style>
+    <script src="00.js" defer></script>
+
+</head>
+<body>
+
+  <h2>Hei opiskellaan javascriptiä</h2>
+  <div>Olen divi</div>
+  <p id="teksti" class="blue">Haluan muuttaa tätä teksitä </p>
+  <script>
+    "use strict";
+
+    console.log("Moi");
+    let nimi = "Mikael";
+    //const on muuttumaton
+
+    const element = document.querySelector("#teksti");
+    console.log(element);
+
+    let teksti = "Moikka maailma";
+    element.innerHTML = teksti;
+
+    //template literal = muotoiltava lause
+    //teksti = f"moikka {name}"
+    const teksti1 = `Kiva tavata` + nimi;
+    const teksti2 = `Kiva tavata ${nimi}`;
+    console.log(teksti1);
+
+    //consolen ja html dokumentin lisäksi voidaan printata alert avulla
+    //alert(teksti2);
+    //nimi = prompt("Anna nimi: ");
+    console.log(`Let avulla nimi muuttuja saa uuden arvon ${nimi}` );
+
+    //muuttujan tyyppejä voi tutkia, typeof
+    console.log(typeof nimi);
+    // javascript on loosely typed
+    //vaihdetaan string numeroksi
+    nimi = 15; //on nyt numero
+
+    element.style.color = "red";
+    console.log(typeof nimi);
+    nimi = true;
+    console.log(typeof nimi);
+
+    const taulukko = [0, 2, 3, 8, 10];
+    console.log(taulukko);
+    //ei onnistu
+    //const taulukko = [2, 6, 123, 5]
+
+    taulukko[0] = 10;
+    console.log(taulukko);
+
+  </script>
+</body>
+</html>
