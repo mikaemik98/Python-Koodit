@@ -1,8 +1,7 @@
+import app
 from flask import Flask, Response, render_template
 import json
 import alkulukulaskuri
-
-app = Flask(__name__)
 
 @app.route('/alkuluku/<alkuluku>')
 def alkuluku(alkuluku):
