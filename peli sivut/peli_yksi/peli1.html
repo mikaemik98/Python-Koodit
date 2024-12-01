@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lentopeli: Afrikan Tähti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="peli1.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Lentopeli: Afrikan Tähti</h1>
+      <div class="menu">
+        <button onclick="alert('Näytä pelin säännöt')">Säännöt</button>
+        <button onclick="alert('Näytä pelin tarina')">Tarina</button>
+        <button onclick="alert('Syötä pelaajan nimi')">Aloita peli</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="map">
+        <h2>Kartta</h2>
+        <p>(Tähän tulee kartta Euroopasta)</p>
+      </section>
+
+      <aside class="player-info">
+        <h2>Pelaajatiedot</h2>
+        <p>Nimi: <span id="player-name">--</span></p>
+        <p>Pisteet: <span id="player-score">0</span></p>
+        <button onclick="alert('Näytä tilastot')">Näytä statsit</button>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <button onclick="toggleFullScreen()">Koko ruudun tila</button>
+    </footer>
+  </div>
+
+  <script>
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>
+<

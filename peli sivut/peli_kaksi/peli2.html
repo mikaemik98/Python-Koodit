@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lentopeli: Seikkailu Taivaalla</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="peli2.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Eurooppalainen turisti</h1>
+      <nav class="menu">
+        <button onclick="alert('Lue pelin säännöt')">📖 Säännöt</button>
+        <button onclick="alert('Lue pelin tarina')">🌍 Tarina</button>
+        <button onclick="alert('Aloita peli')">🚀 Aloita</button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <section class="map">
+        <h2>Kartta</h2>
+        <p>(Kartta Euroopasta tulee tähän)</p>
+      </section>
+
+      <aside class="player-info">
+        <h2>Pelaajatiedot</h2>
+        <p>Nimi: <span id="player-name">--</span></p>
+        <p>Pisteet: <span id="player-score">0</span></p>
+        <button onclick="alert('Näytä pelaajan tilastot')">📊 Statsit</button>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <button onclick="toggleFullScreen()">🖥️ Koko ruudun tila</button>
+    </footer>
+  </div>
+
+  <script>
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lentopeli: Hampurilaisvalikko</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="peli3.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Eurooppalainen turisti</h1>
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+    </header>
+
+    <main class="main-content">
+      <section class="map">
+        <h2>Kartta</h2>
+        <p>(Kartta Euroopasta tulee tähän)</p>
+      </section>
+
+      <aside class="sidebar" id="sidebar">
+        <nav>
+          <button onclick="alert('Lue pelin säännöt')">📖 Säännöt</button>
+          <button onclick="alert('Lue pelin tarina')">🌍 Tarina</button>
+          <button onclick="alert('Syötä pelaajan nimi')">🚀 Aloita peli</button>
+        </nav>
+        <div class="player-info">
+          <h2>Pelaajatiedot</h2>
+          <p>Nimi: <span id="player-name">--</span></p>
+          <p>Pisteet: <span id="player-score">0</span></p>
+          <button onclick="alert('Näytä pelaajan tilastot')">📊 Statsit</button>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <button onclick="toggleFullScreen()">🖥️ Koko ruudun tila</button>
+    </footer>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("active");
+  }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Baloo 2', sans-serif;
+  background: linear-gradient(to bottom, #a0e4f1, #f0f8ff);
+  color: #2e4057;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  background-color: #99d1ff;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 6px solid #4682b4;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #2e4057;
+  margin: 0;
+}
+
+.menu button {
+  margin: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  background-color: #f6e58d;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.menu button:hover {
+  background-color: #ffbe76;
+  transform: scale(1.1);
+}
+
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  padding: 1rem;
+}
+
+.map, .player-info {
+  padding: 1rem;
+  border-radius: 25px;
+  margin: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map {
+  flex: 2;
+  background-color: #dff9fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #7ed6df;
+}
+
+.player-info {
+  flex: 1;
+  background-color: #ffda79;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #f9ca24;
+}
+
+.player-info button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.2rem;
+  background-color: #f6e58d;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.player-info button:hover {
+  background-color: #ffbe76;
+  transform: scale(1.1);
+}
+
+.footer {
+  background-color: #99d1ff;
+  padding: 1rem;
+  text-align: center;
+  border-top: 6px solid #4682b4;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.footer button {
+  padding: 0.8rem 1.2rem;
+  background-color: #f6e58d;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.footer button:hover {
+  background-color: #ffbe76;
+  transform: scale(1.1);
+}
