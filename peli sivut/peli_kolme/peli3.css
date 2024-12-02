@@ -70,9 +70,9 @@ body {
 }
 
 .sidebar {
-  position: fixed; /* Kiinnitetään oikeaan laitaan */
+  position: fixed;
   top: 0;
-  right: -100%; /* Alkuarvo: kokonaan näytön ulkopuolella */
+  right: -100%;
   height: 100%;
   width: 300px;
   background-color: #ffda79;
@@ -81,7 +81,7 @@ body {
   flex-direction: column;
   align-items: center;
   box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
-  transition: right 0.4s ease; /* Sulava siirtyminen */
+  transition: right 0.4s ease;
     z-index: 100;
 }
 
