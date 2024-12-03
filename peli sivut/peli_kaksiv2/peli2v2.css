@@ -96,9 +96,21 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+
+#map1 {
+  width: 40%;
+  height: initial;
+  border-radius: 25px;
+}
+
 .map {
   flex: 2;
   background-color: #dff9fb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
 
 .player-info {
