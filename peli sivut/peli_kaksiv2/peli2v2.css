@@ -106,8 +106,6 @@ body {
   position: relative;
 }
 
-
-
 @keyframes reload {
   from {
     opacity: 0.99;
