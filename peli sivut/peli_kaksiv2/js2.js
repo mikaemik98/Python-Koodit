@@ -59,3 +59,5 @@ function toggleFullScreen() {
       event.stopPropagation();
     });
   });
+
+  /*Tähän loppuu html css javascript*/
