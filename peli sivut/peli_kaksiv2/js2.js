@@ -1,6 +1,6 @@
 "use strict";
 // Päävalikko
-let gamer_tag = "5";
+let gamer_tag = "";
 
 /* Aloita peli */
 document.getElementById("start-button").addEventListener("click", newGame);
@@ -32,11 +32,15 @@ async function newGame() {
   const vastaus1_json = await vastaus1.json();
   console.log(vastaus1_json);
 
-  gamer_tag = name;
+
+  let gameArray = await fetch(`http://127.0.0.1:3000/gamelist`);
+  let games = await gameArray.json();
 
   const screen = document.getElementById("welcome-screen");
   screen.style.display = "none";
+  loadGame(games.length - 1);
 }
+
 
 /* Peli valikko */
 async function loadList() {
@@ -53,69 +57,75 @@ async function loadList() {
     card.innerHTML = `
         <h2>${games[i].name}</h2>        
         <p>Vaikeus taso: ${games[i].difficulty} | Sijainti: ${games[i].location.country} | CO2: ${games[i].co2} | Rahat: ${games[i].money}€</p>
-        <button onclick="loadGame('${games[i].name}')">Lataa Peli</button>
+        <button onclick="loadGame('${[i]}')">Lataa Peli</button>
         `;
     target.appendChild(card);
   }
-  return games;
 }
 
 /* Pelin lataus */
 async function loadGame(gamer_tag) {
+  const screen = document.getElementById("welcome-screen");
+  screen.style.display = "none";
+
   let gameArray = await fetch(`http://127.0.0.1:3000/gamelist`);
   let games = await gameArray.json();
 
-  console.log(games[gamer_tag].airports[0].lat);
-  console.log(games[gamer_tag].airports[0].lon);
+  // Peli kartta
+  const map = L.map("map1").setView([50.23, 13.74], 4);
 
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
 
+  for (let i = 0; i < games[gamer_tag].airports.length; i++) {
+    // Booleanit ja muut määritelmät
+    let location = games[gamer_tag].location.name;
+    let visited = games[gamer_tag].airports[i].visited;
+
+  // Kordinaatit ja lentokenttä
+  let lentokentta = games[gamer_tag].airports[i].name;
+  let lat = games[gamer_tag].airports[i].lat;
+  let lon = games[gamer_tag].airports[i].lon;
+  let coords = [lat, lon];
+
+    let markerColor = "red"; // Oletusväri
+    // Väri testi
+    if (location == lentokentta) {
+      markerColor = "blue";
+    } else if (visited == true) {
+      markerColor = "grey";
+    }
+
+    for (let j = 0; j < games[gamer_tag].flights.length; j++) {
+      if (games[gamer_tag].flights[j].name == lentokentta) {
+        markerColor = "green";
+      }
+      if (games[gamer_tag].flights[j].name == lentokentta && games[gamer_tag].flights[j].bonus_flight == true) {
+        markerColor = "orange";
+      }
+    }
+
+    L.circleMarker(coords, {
+      color: markerColor, // Väri
+      radius: 6, // Pisteen koko
+      weight: 2, // Reunan paksuus
+      opacity: 1, // Täytteen läpinäkyvyys
+      fillOpacity: 1, // Täytteen läpinäkyvyys
+    }).addTo(map).bindPopup(`
+          <b>${games[gamer_tag].airports[i].name}</b><br>
+          <button onclick="showFlightDialog('${
+            games[gamer_tag].airports[i].name
+          }', ${JSON.stringify(coords)})">
+            Valitse tämä lentokenttä
+          </button>
+        `);
+  }
 }
 
 newGame();
 loadList();
-loadGame(gamer_tag);
-
-// *** Kartan ja lentokenttien alustus ***
-const map = L.map("map1").setView([50.23, 13.74], 4);
-
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-}).addTo(map);
-
-fetch("http://127.0.0.1:3000/loadgame/5")
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Lentokenttätietojen lataaminen epäonnistui.");
-    }
-    return response.json();
-  })
-  .then((airports) => {
-    airports.forEach((airport) => {
-      // Värin määrittäminen
-      let markerColor = "blue"; // Oletusväri
-
-      console.log("Lentokentän kordinaatit");
-      console.log(airport.airports.lat);
-      // Lisää kartalle merkki käyttäen L.circleMarker  Tämä ei toimi vaikka hakattu seinään
-      L.circleMarker(airport.coords, {
-        color: markerColor, // Väri
-        radius: 6, // Pisteen koko
-        weight: 2, // Reunan paksuus
-        opacity: 1, // Täytteen läpinäkyvyys
-        fillOpacity: 1, // Täytteen läpinäkyvyys
-      }).addTo(map).bindPopup(` 
-            <b>${airport.name}</b><br>
-            <button onclick="showFlightDialog('${
-              airport.name
-            }', ${JSON.stringify(airport.coords)})">
-              Valitse tämä lentokenttä
-            </button>
-          `);
-    });
-  })
-  .catch((error) => console.error("Virhe lentokenttien lataamisessa:", error));
-
 
 // Globaalit muuttujat ja pelaajan tiedot
 const WEATHER_API_KEY = "95cb8ffa6452ef6b75e12f76180ac231"; // OpenWeatherMap API-avain
@@ -308,4 +318,3 @@ function checkGameStatus() {
     location.reload();
   }
 }
-
