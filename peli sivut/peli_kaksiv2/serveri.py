@@ -420,4 +420,4 @@ def server_gamelist(): #Palauttaa listan Game luokan objektien tiedoista. Avain 
     return json.dumps(gamelist)
 
 if True:
-    app.run(host='127.0.0.1', port=5000) # use_reloader=True pois toistaiseksi
+    app.run(host='127.0.0.1', port=3000) # use_reloader=True pois toistaiseksi

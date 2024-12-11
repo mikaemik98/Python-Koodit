@@ -24,22 +24,39 @@ window.onclick = function (event) {
 
 /* Uusi peli */
 async function newGame() {
-  const name = document.getElementById("nimi").value;
+  const name = document.getElementById("nimi").value.trim();
   const difficulty = document.getElementById("vaikeus").value;
-  const vastaus1 = await fetch(
-    `http://127.0.0.1:3000/newgame/${name}/${difficulty}`
-  );
-  const vastaus1_json = await vastaus1.json();
-  console.log(vastaus1_json);
 
+  // Asetetaan pelaajan nimi ja vaikeustaso paikallisesti
+  playerData.name = name;
+  setDifficulty(difficulty);
 
-  let gameArray = await fetch(`http://127.0.0.1:3000/gamelist`);
-  let games = await gameArray.json();
+  // Päivitetään käyttöliittymä
+  updatePlayerInfo();
+  /*document.getElementById("name-overlay").style.display = "none";*/
 
-  const screen = document.getElementById("welcome-screen");
-  screen.style.display = "none";
-  loadGame(games.length - 1);
+  // Hae pelidata palvelimelta
+  try {
+    const vastaus1 = await fetch(
+      `http://127.0.0.1:3000/newgame/${name}/${difficulty}`
+    );
+    const vastaus1_json = await vastaus1.json();
+    console.log(vastaus1_json);
+
+    let gameArray = await fetch(`http://127.0.0.1:3000/gamelist`);
+    let games = await gameArray.json();
+
+    // Piilotetaan aloitusnäyttö ja ladataan peli
+    const screen = document.getElementById("welcome-screen");
+    screen.style.display = "none";
+    loadGame(games.length - 1); // Lataa viimeisin peli
+  } catch (error) {
+    console.error("Virhe pelin aloituksessa:", error);
+    alert("Pelin aloitus epäonnistui, tarkista palvelinyhteys.");
+  }
 }
+
+
 
 
 /* Peli valikko */
@@ -83,6 +100,7 @@ async function loadGame(gamer_tag) {
     // Booleanit ja muut määritelmät
     let location = games[gamer_tag].location.name;
     let visited = games[gamer_tag].airports[i].visited;
+    let goal = games[gamer_tag].airports[i].goal;
 
   // Kordinaatit ja lentokenttä
   let lentokentta = games[gamer_tag].airports[i].name;
@@ -107,6 +125,10 @@ async function loadGame(gamer_tag) {
       }
     }
 
+    if (goal == true){
+      markerColor = "purple";
+    }
+
     L.circleMarker(coords, {
       color: markerColor, // Väri
       radius: 6, // Pisteen koko
@@ -124,25 +146,80 @@ async function loadGame(gamer_tag) {
   }
 }
 
+
 newGame();
 loadList();
+
+let playerData = {
+  budget: 2000,
+  emissions: 0,
+  visitedAirports: 0,
+  visitedCoordinates: [],
+  currentAirport: null,
+  currentAirportName: '',
+  flightType: 'default',  // Tämä määrittelee oletusarvon
+};
 
 // Globaalit muuttujat ja pelaajan tiedot
 const WEATHER_API_KEY = "95cb8ffa6452ef6b75e12f76180ac231"; // OpenWeatherMap API-avain
 
-let playerData = {
-  name: "",
-  budget: 1500,
-  emissions: 0,
-  visitedAirports: 0,
-  currentAirport: [50.23, 13.74], // Aloituskoordinaatit
-  visitedCoordinates: [], // Käydyt lentokentät
-  currentAirportName: "Praha", // Aloituskentän nimi
-};
+
+async function fetchGameData () {
+  try {
+    const response = await fetch("http://127.0.0.1:3000/game-data"); // Korvaa oikealla URL:illa
+    if (!response.ok) {
+      throw new Error("Virhe palvelimelta haettaessa pelidataa");
+  }
+    const gamedata = await response.json();
+    updatePlayerDataFromServer(gamedata);
+} catch (error) {
+  console.error("Virhe pelidatan haussa", error);
+  }
+}
 
 // *** Sivupalkin hallinta ***
 function toggleSidebar(type) {
   document.getElementById(`sidebar-${type}`).classList.add("active");
+}
+
+function updatePlayerDataFromServer(gameData) {
+  if (!gameData || typeof gameData !== "object") return;
+
+  playerData.name = gameData.name || playerData.name;
+  playerData.budget = gameData.money || playerData.budget;
+  playerData.emissions = gameData.co2 || playerData.emissions;
+  playerData.visitedAirports = gameData.visitedAirports || playerData.visitedAirports;
+  if (gameData.location && gameData.location.lat && gameData.location.lon) {
+    playerData.currentAirport = [gameData.location.lat, gameData.location.lon];
+  }
+  playerData.currentAirportName = gameData.location?.name || playerData.currentAirportName;
+  updatePlayerInfo();
+}
+
+function setDifficulty(difficulty) {
+  switch (difficulty) {
+    case "helppo":
+      playerData.budget = 2000;
+      break;
+    case "normaali":
+      playerData.budget = 1500;
+      break;
+    case "vaikea":
+      playerData.budget = 1000;
+      break;
+    default:
+      playerData.budget = 500; // Oletus
+  }
+  console.log(`Vaikeustaso asetettu: ${difficulty}, budjetti: ${playerData.budget}`);
+  updatePlayerInfo();
+}
+
+// Päivitä pelaajan tiedot käyttöliittymässä
+function updatePlayerInfo() {
+  document.getElementById("player-name").textContent = playerData.name || "N/A";
+  document.getElementById("player-budjetti").textContent = `${playerData.budget.toFixed(2)} €`;
+  document.getElementById("player-emissions").textContent = `${playerData.emissions.toFixed(2)} kg CO2`;
+  document.getElementById("current-airport").textContent = playerData.currentAirportName || "Ei tietoja";
 }
 
 function closeSidebar(type) {
@@ -160,20 +237,22 @@ function toggleFullScreen() {
 
 // *** Pelin aloitus ***
 function startGame() {
-  const nameInput = document.getElementById("player-name-input").value.trim();
+  const nameInput = document.getElementById("player-name").value.trim();
   if (!nameInput) {
     alert("Anna pelaajan nimi!");
     return;
   }
   playerData.name = nameInput;
-  playerData.currentAirport = [50.23, 13.74]; // Aloituskoordinaatit
+  fetchGameData();
+  document.getElementById("name-overlay").style.display = "none";
+  /*playerData.currentAirport = [50.23, 13.74]; // Aloituskoordinaatit
   playerData.currentAirportName = "Praha"; // Asetetaan alkuperäinen kenttä nimeksi
   document.getElementById("player-name").textContent = playerData.name;
   document.getElementById(
     "player-budjetti"
   ).textContent = `${playerData.budget} €`;
   document.getElementById("name-overlay").style.display = "none";
-  updatePlayerInfo();
+  updatePlayerInfo();*/
   fetchWeather(playerData.currentAirport, updateWeatherInfo); // Hae säätiedot heti pelin alussa
 }
 
@@ -243,7 +322,7 @@ function closeDialog() {
   }
 }
 
-// *** Lentovalinnan vahvistus ***
+// Lentovalinnan vahvistus
 function confirmFlight(airportName, airportCoords, flightType) {
   const costsPerKm = { low: 0.4, medium: 0.3, high: 0.2 };
   const emissionsPerKm = { low: 75, medium: 150, high: 300 };
@@ -266,11 +345,12 @@ function confirmFlight(airportName, airportCoords, flightType) {
   playerData.currentAirport = airportCoords;
   playerData.currentAirportName = airportName; // Päivitetään lentokentän nimi
 
-  updatePlayerInfo();
+  updatePlayerInfo(); // Päivitetään pelaajan tiedot
   fetchWeather(playerData.currentAirport, updateWeatherInfo); // Päivitä säätiedot kenttämuutoksen jälkeen
-  closeDialog();
-  checkGameStatus();
+  closeDialog(); // Sulje lentovalintadialogi
+  checkGameStatus(); // Tarkista pelin tila
 }
+
 
 // *** Pelaajatietojen päivitys ***
 function updatePlayerInfo() {
