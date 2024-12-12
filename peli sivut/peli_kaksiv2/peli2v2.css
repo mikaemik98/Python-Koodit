@@ -245,21 +245,21 @@ option {
   width: 20px;  /* Pienempi leveys */
   height: 20px; /* Pienempi korkeus */
   border-radius: 50%; /* Pyöristetyt kulmat */
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* Lisää kevyempi varjo */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 10px;  /* Pienempi fonttikoko */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Lisää animaatiota */
+  font-size: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 /* Hover-efekti */
 .airport-marker .marker:hover {
-  transform: scale(1.3);  /* Suurentaa markkeria hover-tilassa */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Lisää varjoa hover-tilassa */
-  cursor: pointer;  /* Näyttää sormimerkkiä */
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 /* Käyty kenttä */
@@ -269,19 +269,19 @@ option {
 
 /* Tavoitekentän väri */
 .airport-marker .goal .marker {
-  background: linear-gradient(45deg, #8a2be2, #6a0dad); /* Violetti gradientti */
+  background: linear-gradient(45deg, #8a2be2, #6a0dad);
   box-shadow: 0 0 8px rgba(138, 43, 226, 0.7);
 }
 
 /* Pelaajan kenttä (sininen) */
 .airport-marker .marker.pelaaja {
-  background-color: #4caf50; /* Vihreä */
+  background-color: #4caf50;
 }
 
 /* Kentän nimi markkerin päällä */
 .airport-marker .airport-name {
   display: none; /* Ei näytetä nimiä oletuksena */
-  font-size: 8px;  /* Pienempi fonttikoko kentän nimelle */
+  font-size: 8px;
   color: #000000;
 }
 
