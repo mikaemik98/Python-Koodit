@@ -264,7 +264,7 @@ option {
 
 /* Käyty kenttä */
 .visited .marker {
-  opacity: 0.5;  /* Jos kenttä on käyty, se muuttuu läpinäkyvämmäksi */
+  opacity: 1;  /* Jos kenttä on käyty, se muuttuu läpinäkyvämmäksi */
 }
 
 /* Tavoitekentän väri */

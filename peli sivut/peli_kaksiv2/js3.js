@@ -311,6 +311,19 @@ function closeDialog() {
   }
 }
 
+function checkGameStatus() {
+  const goalAirports = games[gamer_tag].airports.filter((airport) => airport.goal);
+  const visitedGoals = goalAirports.every((airport) => airport.visited);
+
+  if (visitedGoals) {
+    alert("Onneksi olkoon! Olet voittanut pelin!");
+    location.reload();
+  } else if (playerData.budget <= 0) {
+    alert("Rahasi loppuivat. Peli päättyi.");
+    location.reload();
+  }
+}
+
 // *** Lentovalinnan vahvistus ***
 function confirmFlight(airportName, airportCoords, flightType, airportIcao) {
   playGame(flightType, airportIcao);
@@ -386,33 +399,48 @@ function toRad(value) {
 }
 
 // *** Pelin tilan tarkastus ***
-function checkGameStatus() {
-  const goalAirports = games[gamer_tag].airports.filter((airport) => airport.goal);
-  const visitedGoals = goalAirports.every((airport) => airport.visited);
-
-  if (visitedGoals) {
-    alert("Onneksi olkoon! Olet voittanut pelin!");
-    location.reload();
-  } else if (playerData.budget <= 0) {
-    alert("Rahasi loppuivat. Peli päättyi.");
-    location.reload();
-  }
-}
-
 function update_player_info(gamer_tag) {
-  //Päivittää sivupalkin pelaajatiedot
-  //Lasketaan käydyt kentät:
+  // Lasketaan käydyt kentät
   let visited_count = 0;
   for (let airport of games[gamer_tag].airports) {
     if (airport.visited == true) {
-      visited_count = visited_count + 1;
+      visited_count++;
     }
   }
-  //Laitetaan arvot sivulle:
+
+  // Tavoitekentät ja käydyt tavoitekentät
+  const goalAirports = games[gamer_tag].airports.filter((airport) => airport.goal);
+  const visitedGoalsCount = goalAirports.filter((airport) => airport.visited).length;
+
+  // Päivitetään pelaajatiedot
   document.getElementById("player-name").innerText = games[gamer_tag].name;
   document.getElementById("player-budjetti").innerText = games[gamer_tag].money;
   document.getElementById("player-kohde").innerText = visited_count;
   document.getElementById("player-paastot").innerText = games[gamer_tag].co2;
   document.getElementById("player-location").innerText =
     games[gamer_tag].location.name;
+
+  // Päivitetään tieto tavoitekentistä
+  document.getElementById(
+    "player-goals-visited"
+  ).textContent = `${visitedGoalsCount}/${goalAirports.length}`;
+
+  // Tarkistetaan, onko pelaaja tavoitekentällä
+  const playerMessageElement = document.getElementById("player-message");
+  const isPlayerAtGoal = goalAirports.some(
+    (airport) => airport.name === games[gamer_tag].location.name
+  );
+
+  // Näytä viesti, jos pelaaja on tavoitekentällä
+  if (isPlayerAtGoal) {
+    playerMessageElement.textContent = "Olet tällä hetkellä tavoitelentokentällä!";
+  } else {
+    playerMessageElement.textContent = ""; // Tyhjennä viesti, jos pelaaja ei ole enää tavoitekentällä
+  }
+
+  // Voittotilanteen tarkistus
+  if (goalAirports.every((airport) => airport.visited)) {
+    alert("Onneksi olkoon! Olet voittanut pelin!");
+    location.reload();
+  }
 }
