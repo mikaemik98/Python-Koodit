@@ -278,9 +278,9 @@ function showFlightDialog(airportName, airportCoords, airportIcao) {
     const costsPerKm = { small: 0.4, normal: 0.3, high: 0.2 }; // Hinnat per kilometri
 
     // Lasketaan hinnat eri lentotyypeille
-    const smallCost = (distance * costsPerKm.small).toFixed(2);
-    const normalCost = (distance * costsPerKm.normal).toFixed(2);
-    const highCost = (distance * costsPerKm.high).toFixed(2);
+    const smallCost = Math.round(distance * costsPerKm.small).toFixed(2);
+    const normalCost = Math.round(distance * costsPerKm.normal).toFixed(2);
+    const highCost = Math.round(distance * costsPerKm.high).toFixed(2);
 
     const dialog = document.createElement("div");
     dialog.className = "flight-dialog";
