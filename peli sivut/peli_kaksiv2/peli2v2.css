@@ -92,7 +92,7 @@ body {
 .player-info button {
   margin-top: 1rem;
   padding: 0.8rem 1.2rem;
-  background-color: #f6e58d;
+  background-color: #ffda79;
   border: none;
   border-radius: 15px;
   font-size: 1rem;
@@ -147,7 +147,7 @@ body {
 
 .footer button {
   padding: 0.8rem 1.2rem;
-  background-color: #f6e58d;
+  background-color: #ffda79;
   border: none;
   border-radius: 15px;
   font-size: 1rem;
@@ -182,7 +182,7 @@ body {
 .flight-dialog button {
   margin: 10px 0;
   padding: 12px;
-  background-color: #f6e58d;
+  background-color: #ffda79;
   border: none;
   border-radius: 8px;
   cursor: pointer;

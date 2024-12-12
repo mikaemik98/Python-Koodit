@@ -69,7 +69,7 @@ async function newGame() {
     }
   });
 
-  // Nollataan pelaajan tiedot
+  /*// Nollataan pelaajan tiedot
   playerData = {
     name: "",
     budget: 1500,
@@ -79,6 +79,8 @@ async function newGame() {
     visitedCoordinates: [],
     currentAirportName: "Praha",
   };
+
+   */
 
   const name = document.getElementById("nimi").value;
   const difficulty = document.getElementById("vaikeus").value;
@@ -233,6 +235,7 @@ let playerData = {
   currentAirportName: "Praha", // Aloituskentän nimi
 };
 
+
 // *** Säätiedon haku ***
 function fetchWeather(coords, callback) {
   const [lat, lon] = coords;
@@ -271,6 +274,14 @@ function updateWeatherInfo(weather, city) {
 // *** Lentokentän valinta ***
 function showFlightDialog(airportName, airportCoords, airportIcao) {
   fetchWeather(airportCoords, (weather, city) => {
+    const distance = calculateDistance(playerData.currentAirport, airportCoords); // Laske etäisyys
+    const costsPerKm = { small: 0.4, normal: 0.3, high: 0.2 }; // Hinnat per kilometri
+
+    // Lasketaan hinnat eri lentotyypeille
+    const smallCost = (distance * costsPerKm.small).toFixed(2);
+    const normalCost = (distance * costsPerKm.normal).toFixed(2);
+    const highCost = (distance * costsPerKm.high).toFixed(2);
+
     const dialog = document.createElement("div");
     dialog.className = "flight-dialog";
     dialog.innerHTML = `
@@ -278,14 +289,14 @@ function showFlightDialog(airportName, airportCoords, airportIcao) {
       <p>${weather}</p>
       <p>Valitse lentoluokka:</p>
       <button onclick="confirmFlight('${airportName}', ${JSON.stringify(
-      airportCoords
-    )}, 'small', '${airportIcao}')">Vähänpäästöinen</button>
+        airportCoords
+      )}, 'small', '${airportIcao}')">Vähänpäästöinen - Hinta: €${smallCost}</button>
       <button onclick="confirmFlight('${airportName}', ${JSON.stringify(
-      airportCoords
-    )}, 'normal', '${airportIcao}')">Keskipäästöinen</button>
+        airportCoords
+      )}, 'normal', '${airportIcao}')">Keskipäästöinen - Hinta: €${normalCost}</button>
       <button onclick="confirmFlight('${airportName}', ${JSON.stringify(
-      airportCoords
-    )}, 'high', '${airportIcao}')">Suurpäästöinen</button>
+        airportCoords
+      )}, 'high', '${airportIcao}')">Suurpäästöinen - Hinta: €${highCost}</button>
       <button onclick="closeDialog()">Peruuta</button>
     `;
     document.body.appendChild(dialog);
