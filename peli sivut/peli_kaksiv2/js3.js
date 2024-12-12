@@ -69,19 +69,6 @@ async function newGame() {
     }
   });
 
-  /*// Nollataan pelaajan tiedot
-  playerData = {
-    name: "",
-    budget: 1500,
-    emissions: 0,
-    visitedAirports: 0,
-    currentAirport: [50.23, 13.74],
-    visitedCoordinates: [],
-    currentAirportName: "Praha",
-  };
-
-   */
-
   const name = document.getElementById("nimi").value;
   const difficulty = document.getElementById("vaikeus").value;
   const vastaus1 = await fetch(
@@ -92,9 +79,7 @@ async function newGame() {
 
   const screen = document.getElementById("welcome-screen");
   screen.style.display = "none";
-  gamer_tag = games.length;
-  loadGame(gamer_tag);
-  return gamer_tag;
+  collabTag(name);
 }
 
 /* Peli valikko */
@@ -105,20 +90,29 @@ async function loadList() {
   const target = document.getElementById("myModal");
   target.innerHTML = ""
 
-  for (let i = 0; i < games.length; i++) {
-    var gamer_tag = i;
-    // Place
+  Object.values(games).forEach((game) => {
     let card = document.createElement("div");
     card.setAttribute("class", "modal-content");
     card.innerHTML = `
-        <h2>${games[i].name}</h2>        
-        <p>Vaikeus taso: ${games[i].difficulty} | Sijainti: ${
-      games[i].location.country
-    } | CO2: ${games[i].co2} | Rahat: ${games[i].money}€</p>
-        <button onclick="loadGame('${[gamer_tag]}')">Lataa Peli</button>
+        <h2>${game.name}</h2>        
+        <p>Vaikeus taso: ${game.difficulty} | Sijainti: ${
+      game.location.country
+    } | CO2: ${game.co2} | Rahat: ${game.money}€</p>
+        <button onclick="collabTag('${game.name}')">Lataa Peli</button>
         `;
     target.appendChild(card);
-  }
+  });
+}
+
+async function collabTag(tag){
+  const lataa = await fetch(
+    `http://127.0.0.1:3000/loadgame/${tag}`
+  );
+  const lataa_json = await lataa.json();
+  console.log(lataa_json);
+  gamer_tag = tag;
+  loadGame(gamer_tag);
+  return gamer_tag;
 }
 
 /* Pelin lataus */
@@ -205,6 +199,7 @@ async function loadGame(gamer_tag) {
   }
 
   update_player_info(gamer_tag);
+  return gamer_tag;
 }
 
 
@@ -216,10 +211,9 @@ async function playGame(flight_type, destination) {
   let vastaus2 = await fetch(query);
   let vastaus2_json = await vastaus2.json();
   console.log(vastaus2_json);
-  loadGame(gamer_tag);
+  collabTag(gamer_tag);
 }
 
-// newGame();
 loadList();
 
 // Globaalit muuttujat ja pelaajan tiedot
@@ -311,19 +305,6 @@ function closeDialog() {
   }
 }
 
-function checkGameStatus() {
-  const goalAirports = games[gamer_tag].airports.filter((airport) => airport.goal);
-  const visitedGoals = goalAirports.every((airport) => airport.visited);
-
-  if (visitedGoals) {
-    alert("Onneksi olkoon! Olet voittanut pelin!");
-    location.reload();
-  } else if (playerData.budget <= 0) {
-    alert("Rahasi loppuivat. Peli päättyi.");
-    location.reload();
-  }
-}
-
 // *** Lentovalinnan vahvistus ***
 function confirmFlight(airportName, airportCoords, flightType, airportIcao) {
   playGame(flightType, airportIcao);
@@ -358,7 +339,6 @@ function confirmFlight(airportName, airportCoords, flightType, airportIcao) {
   updatePlayerInfo();
   fetchWeather(playerData.currentAirport, updateWeatherInfo); // Päivitä säätiedot kenttämuutoksen jälkeen
   closeDialog();
-  checkGameStatus();
 }
 
 
@@ -444,3 +424,4 @@ function update_player_info(gamer_tag) {
     location.reload();
   }
 }
+
