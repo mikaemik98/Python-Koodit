@@ -146,7 +146,7 @@ async function loadGame(gamer_tag) {
     let markerColor = "red"; // Oletusväri
 
     if (location == lentokentta) {
-      markerColor = "blue";
+      markerColor = "blue"; // Pelaaja on tässä kentässä
     } else if (visited == true) {
       markerColor = "grey";  // Kenttä on käyty, niin väri harmaaksi
     }
@@ -165,18 +165,24 @@ async function loadGame(gamer_tag) {
       }
     }
 
+    // Tavoitekenttä (goal) ja pelaajan saapuminen sinne
     if (goal == true) {
-      markerColor = "purple";
+      markerColor = "purple";  // Alustava väri
+      if (location == lentokentta) {
+        markerColor = "blue"; // Tavoitekenttä muuttuu siniseksi, jos pelaaja on siellä
+      }
     }
 
-    // Lisää markkerit
-    const marker = L.circleMarker(coords, {
-      color: markerColor, // Väri
-      radius: 6, // Pisteen koko
-      weight: 2, // Reunan paksuus
-      opacity: 1, // Täytteen läpinäkyvyys
-      fillOpacity: 1, // Täytteen läpinäkyvyys
-    }).addTo(map).bindPopup(`    
+    // Luo divIcon-tyylinen markkeri (moderni tyyli)
+    const marker = L.divIcon({
+      className: 'airport-marker',
+      html: `<div class="marker" style="background-color: ${markerColor};">
+            </div>`,
+      iconSize: [14, 14], // Pisteen koko
+      iconAnchor: [6, 6], // Keskittää markkerin
+    });
+
+    const mapMarker = L.marker(coords, { icon: marker }).addTo(map).bindPopup(`
       <b>${games[gamer_tag].airports[i].name}</b><br>
       <button onclick="showFlightDialog('${
         games[gamer_tag].airports[i].name
@@ -187,15 +193,19 @@ async function loadGame(gamer_tag) {
 
     // Jos kenttä on käyty, lisää CSS-luokka
     if (visited) {
-      marker.getElement().classList.add("visited");
+      mapMarker.getElement().classList.add("visited");
     }
 
+    // Jos ei ole lentoa, vain tavallinen popup
     if (!lentoBoolean) {
-      marker.bindPopup(`<b>${games[gamer_tag].airports[i].name}</b>`);
+      mapMarker.bindPopup(`<b>${games[gamer_tag].airports[i].name}</b>`);
     }
   }
+
   update_player_info(gamer_tag);
 }
+
+
 
 
 /* Pelaaminen */
